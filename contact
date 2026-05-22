@@ -1,0 +1,123 @@
+
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+export const Route = createFileRoute("/contact")({
+  head: () => ({
+    meta: [
+      { title: "Contact — Find Your Howl" },
+      {
+        name: "description",
+        content:
+          "Send up a howl. We respond to every inquiry within one business day.",
+      },
+      { property: "og:title", content: "Contact — Find Your Howl" },
+      {
+        property: "og:description",
+        content: "Send up a howl. We'll answer within one business day.",
+      },
+    ],
+  }),
+  component: ContactPage,
+});
+function ContactPage() {
+  const [sent, setSent] = useState(false);
+  return (
+    <main className="bg-pine font-sans text-bone">
+      <SiteHeader />
+      <section className="grid gap-16 px-6 py-24 md:grid-cols-12 md:px-20 md:py-32">
+        <div className="md:col-span-5">
+          <span className="mb-6 block text-xs font-semibold uppercase tracking-[0.3em] text-amber">
+            Contact
+          </span>
+          <h1 className="mb-8 font-display text-5xl leading-[0.95] md:text-7xl">
+            Send up a <span className="italic text-amber">howl.</span>
+          </h1>
+          <p className="mb-10 max-w-md text-lg leading-relaxed text-mist">
+            Tell us about your business and what you'd like to grow. We'll
+            answer within one business day — usually faster.
+          </p>
+          <div className="space-y-3 text-sm uppercase tracking-widest text-mist">
+            <div>
+              <div className="text-amber">Email</div>
+              <a href="mailto:hello@findyourhowl.com" className="text-bone normal-case tracking-normal hover:text-amber">
+                hello@findyourhowl.com
+              </a>
+            </div>
+            <div>
+              <div className="text-amber">Hours</div>
+              <div className="text-bone normal-case tracking-normal">Mon–Fri · Pacific time</div>
+            </div>
+          </div>
+        </div>
+        <div className="md:col-span-7">
+          {sent ? (
+            <div className="border border-sage/30 bg-pine p-10">
+              <h2 className="mb-4 font-display text-3xl text-amber">Howl received.</h2>
+              <p className="text-mist">
+                Thanks for reaching out. We'll be back to you within one business day.
+              </p>
+            </div>
+          ) : (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setSent(true);
+              }}
+              className="space-y-6"
+            >
+              <Field label="Your name" name="name" required />
+              <Field label="Email" name="email" type="email" required />
+              <Field label="Business" name="business" />
+              <div>
+                <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.25em] text-mist">
+                  What are you trying to grow?
+                </label>
+                <textarea
+                  name="message"
+                  rows={5}
+                  required
+                  className="w-full border border-sage/30 bg-pine px-4 py-3 text-bone placeholder:text-mist/50 focus:border-amber focus:outline-none"
+                  placeholder="A few sentences is fine."
+                />
+              </div>
+              <button
+                type="submit"
+                className="bg-amber px-8 py-4 text-sm font-bold uppercase tracking-widest text-pine hover:scale-[1.02]"
+              >
+                Send up the howl
+              </button>
+            </form>
+          )}
+        </div>
+      </section>
+      <SiteFooter />
+    </main>
+  );
+}
+function Field({
+  label,
+  name,
+  type = "text",
+  required,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+}) {
+  return (
+    <div>
+      <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.25em] text-mist">
+        {label}
+      </label>
+      <input
+        name={name}
+        type={type}
+        required={required}
+        className="w-full border border-sage/30 bg-pine px-4 py-3 text-bone placeholder:text-mist/50 focus:border-amber focus:outline-none"
+      />
+    </div>
+  );
+}
